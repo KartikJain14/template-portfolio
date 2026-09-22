@@ -1,17 +1,96 @@
 ---
+/* ---------------------------------------------------------------------------
+   This file decides the ORDER of the sections on the page.
+   To move a section, move its block below. To remove one for good, delete
+   its block — but you can also just empty it in src/data/portfolio.js and
+   it will disappear on its own, menu entry and all.
+   --------------------------------------------------------------------------- */
 
+import Base from "../layouts/Base.astro";
+import Hero from "../components/Hero.astro";
+import Ticker from "../components/Ticker.astro";
+import Section from "../components/Section.astro";
+import About from "../components/About.astro";
+import Experience from "../components/Experience.astro";
+import Projects from "../components/Projects.astro";
+import Achievements from "../components/Achievements.astro";
+import Contact from "../components/Contact.astro";
+import Footer from "../components/Footer.astro";
+
+import {
+  about,
+  qualities,
+  experience,
+  projects,
+  achievements,
+  skills,
+  sections,
+} from "../data/portfolio.js";
+
+// A section is shown only when it actually has something in it.
+const enabled = [
+  { id: "about", show: about.paragraphs.length + about.facts.length + qualities.length + skills.length > 0 },
+  { id: "experience", show: experience.length > 0 },
+  { id: "projects", show: projects.length > 0 },
+  { id: "achievements", show: achievements.length > 0 },
+  { id: "contact", show: true },
+].filter((item) => item.show);
+
+// Section numbers (01, 02, ...) and the menu are built from that same list,
+// so they never end up out of sync with the page.
+const numberOf = Object.fromEntries(enabled.map((item, i) => [item.id, i + 1]));
+const isOn = (id) => id in numberOf;
+
+const navItems = enabled.map((item) => ({
+  id: item.id,
+  label: sections[item.id].label,
+}));
+
+// The main button in the hero points at the best section you actually have,
+// so it never links to a section you removed.
+const ctaLabels = {
+  projects: "See my work",
+  experience: "See my experience",
+  achievements: "See my achievements",
+  about: "More about me",
+};
+
+const ctaId = ["projects", "experience", "achievements", "about"].find(isOn);
+const cta = ctaId ? { id: ctaId, label: ctaLabels[ctaId] } : null;
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Base navItems={navItems}>
+  <Hero cta={cta} />
+
+  <Ticker items={qualities.map((quality) => quality.title)} />
+
+  {isOn("about") && (
+    <Section id="about" index={numberOf.about} {...sections.about}>
+      <About />
+    </Section>
+  )}
+
+  {isOn("experience") && (
+    <Section id="experience" index={numberOf.experience} {...sections.experience}>
+      <Experience />
+    </Section>
+  )}
+
+  {isOn("projects") && (
+    <Section id="projects" index={numberOf.projects} {...sections.projects}>
+      <Projects />
+    </Section>
+  )}
+
+  {isOn("achievements") && (
+    <Section id="achievements" index={numberOf.achievements} {...sections.achievements}>
+      <Achievements />
+    </Section>
+  )}
+
+  <Section id="contact" index={numberOf.contact} {...sections.contact}>
+    <Contact />
+  </Section>
+
+  <Footer />
+</Base>
