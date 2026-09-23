@@ -62,8 +62,7 @@ export const profile = {
   // YOUR PHOTO (optional).
   // Put your picture inside the "public" folder, then write "/my-photo.jpg"
   // Leave it as "" and a nice card with your initials is shown instead.
-  photo:
-    "https://mxp-media.ilnmedia.com/media/content/2026/Jun/Image-1-walt-disney-productions-1_6a290e33eccc9.jpg?w=780&h=585&cc=1",
+  photo: "https://thumbs.dreamstime.com/b/teenager-suit-tie-19164381.jpg",
 
   // YOUR RESUME (optional).
   // Put your PDF inside the "public" folder, then write "/resume.pdf"
