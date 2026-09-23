@@ -11,7 +11,6 @@ const loop = [...items, ...items];
       {loop.map((item) => (
         <span class="ticker__item">
           {item}
-          <span class="ticker__dot"></span>
         </span>
       ))}
     </div>
@@ -25,9 +24,6 @@ const loop = [...items, ...items];
     border-block: 1px solid var(--line);
     background: var(--bg-soft);
     overflow: hidden;
-    /* Fade the words out at both edges instead of cutting them. */
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
   }
 
   .ticker__track {
@@ -48,23 +44,14 @@ const loop = [...items, ...items];
     gap: clamp(1.5rem, 4vw, 3rem);
     padding-right: clamp(1.5rem, 4vw, 3rem);
     font-family: var(--font-display);
-    font-size: clamp(1.4rem, 3.5vw, 2.1rem);
+    font-size: clamp(1.18rem, 2.8vw, 1.65rem);
     line-height: 1.1;
-    letter-spacing: -0.02em;
+    letter-spacing: 0.005em;
     white-space: nowrap;
     color: var(--ink-2);
   }
 
-  .ticker__dot {
-    width: 0.4rem;
-    height: 0.4rem;
-    border-radius: 999px;
-    background: var(--accent);
-    flex: none;
-  }
-
   @media (prefers-reduced-motion: reduce) {
     .ticker__track { animation: none; }
-    .ticker { -webkit-mask-image: none; mask-image: none; }
   }
 </style>

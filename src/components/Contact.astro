@@ -65,8 +65,9 @@ import { contact, socials, profile } from "../data/portfolio.js";
 
   .contact__note {
     max-width: 46ch;
-    font-size: clamp(1.0625rem, 1rem + 0.35vw, 1.2rem);
-    line-height: 1.65;
+    font-size: clamp(1.08rem, 1.02rem + 0.28vw, 1.2rem);
+    line-height: 1.5;
+    letter-spacing: 0.014em;
     color: var(--ink-2);
     text-wrap: pretty;
   }
@@ -78,36 +79,31 @@ import { contact, socials, profile } from "../data/portfolio.js";
     flex-wrap: wrap;
     align-items: center;
     gap: 1rem 1.25rem;
-    margin-top: clamp(1.75rem, 4vw, 2.5rem);
+    margin-top: clamp(1.25rem, 3vw, 2rem);
   }
 
   .contact__address {
     font-family: var(--font-display);
-    font-size: clamp(1.75rem, 1.1rem + 2.6vw, 3.1rem);
-    line-height: 1.05;
-    letter-spacing: -0.025em;
+    font-size: clamp(1.55rem, 1.05rem + 2vw, 2.6rem);
+    line-height: 1.08;
+    letter-spacing: -0.005em;
     /* Wrap long addresses instead of pushing the page sideways. */
     overflow-wrap: anywhere;
-    background-image: linear-gradient(var(--accent), var(--accent));
-    background-repeat: no-repeat;
-    background-position: 0 100%;
-    background-size: 0% 2px;
-    transition: background-size 0.5s var(--ease-out), color 0.3s var(--ease);
+    transition: color 0.3s var(--ease);
   }
 
   .contact__address:hover {
     color: var(--accent);
-    background-size: 100% 2px;
   }
 
   .copy {
     position: relative;
     display: inline-grid;
     place-items: center;
-    padding: 0.5rem 0.95rem;
+    padding: 0.42rem 0.8rem;
     border: 1px solid var(--line);
     border-radius: 999px;
-    font-size: 0.82rem;
+    font-size: 0.76rem;
     color: var(--muted);
     transition: border-color 0.25s var(--ease), color 0.25s var(--ease);
   }
@@ -144,7 +140,7 @@ import { contact, socials, profile } from "../data/portfolio.js";
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: clamp(0.9rem, 2.2vw, 1.25rem) 0.25rem;
+    padding: clamp(0.7rem, 1.8vw, 1rem) 0.25rem;
     border-bottom: 1px solid var(--line);
     transition: padding-left 0.4s var(--ease-out), color 0.3s var(--ease);
   }
@@ -152,9 +148,9 @@ import { contact, socials, profile } from "../data/portfolio.js";
   .social:hover { padding-left: 1rem; color: var(--accent); }
 
   .social__label {
-    font-size: clamp(1.05rem, 1rem + 0.5vw, 1.3rem);
+    font-size: clamp(1rem, 0.96rem + 0.35vw, 1.16rem);
     font-weight: 500;
-    letter-spacing: -0.015em;
+    letter-spacing: 0.005em;
   }
 
   .social__handle {

@@ -40,8 +40,8 @@ import { experience } from "../data/portfolio.js";
   .tl {
     position: relative;
     display: grid;
-    gap: 0.5rem 2.5rem;
-    padding: 0 0 clamp(2.25rem, 5vw, 3.25rem) 1.75rem;
+    gap: 0.35rem 2rem;
+    padding: 0 0 clamp(1.8rem, 4vw, 2.6rem) 1.5rem;
   }
 
   .tl:last-child { padding-bottom: 0; }
@@ -125,10 +125,10 @@ import { experience } from "../data/portfolio.js";
 
   .tl__role {
     font-family: var(--font-display);
-    font-weight: 400;
-    font-size: clamp(1.45rem, 1.2rem + 1vw, 1.95rem);
-    line-height: 1.15;
-    letter-spacing: -0.02em;
+    font-weight: 500;
+    font-size: clamp(1.28rem, 1.1rem + 0.75vw, 1.68rem);
+    line-height: 1.18;
+    letter-spacing: 0;
   }
 
   .tl__org {
@@ -136,8 +136,8 @@ import { experience } from "../data/portfolio.js";
     flex-wrap: wrap;
     align-items: center;
     gap: 0.5rem;
-    margin-top: 0.3rem;
-    font-size: 0.95rem;
+    margin-top: 0.2rem;
+    font-size: 0.86rem;
   }
 
   .tl__orgname { font-weight: 500; color: var(--ink); }
@@ -154,13 +154,14 @@ import { experience } from "../data/portfolio.js";
   .tl__points {
     display: grid;
     gap: 0.45rem;
-    margin: 1rem 0 0;
+    margin: 0.75rem 0 0;
     padding: 0;
     list-style: none;
     max-width: 60ch;
     color: var(--ink-2);
-    font-size: 0.95rem;
-    line-height: 1.65;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    letter-spacing: 0.012em;
   }
 
   .tl__points li {

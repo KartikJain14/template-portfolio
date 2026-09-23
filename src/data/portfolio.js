@@ -28,8 +28,8 @@
    ========================================================================== */
 
 export const theme = {
-  accent: "#E8542E",      // colour used in light mode
-  accentDark: "#FF7A50",  // slightly brighter version for dark mode
+  accent: "#E8542E", // colour used in light mode
+  accentDark: "#FF7A50", // slightly brighter version for dark mode
 };
 
 /* ==========================================================================
@@ -40,7 +40,7 @@ export const theme = {
 
 export const profile = {
   name: "Aarav Mehta",
-  shortName: "Aarav",          // used in the menu and the footer
+  shortName: "Aarav", // used in the menu and the footer
 
   // The one-line description under your name.
   role: "Computer Science Undergraduate",
@@ -62,7 +62,8 @@ export const profile = {
   // YOUR PHOTO (optional).
   // Put your picture inside the "public" folder, then write "/my-photo.jpg"
   // Leave it as "" and a nice card with your initials is shown instead.
-  photo: "",
+  photo:
+    "https://mxp-media.ilnmedia.com/media/content/2026/Jun/Image-1-walt-disney-productions-1_6a290e33eccc9.jpg?w=780&h=585&cc=1",
 
   // YOUR RESUME (optional).
   // Put your PDF inside the "public" folder, then write "/resume.pdf"
@@ -178,7 +179,8 @@ export const achievements = [
   },
   {
     title: "Dean's Merit List",
-    detail: "Awarded for being in the top 5% of the department across two consecutive semesters.",
+    detail:
+      "Awarded for being in the top 5% of the department across two consecutive semesters.",
     year: "2024",
     tag: "Academics",
   },
@@ -190,7 +192,8 @@ export const achievements = [
   },
   {
     title: "Google Cloud Certified — Associate",
-    detail: "Completed the associate cloud engineer learning path and certification.",
+    detail:
+      "Completed the associate cloud engineer learning path and certification.",
     year: "2024",
     tag: "Certification",
   },
@@ -268,7 +271,11 @@ export const contact = {
 export const socials = [
   { label: "GitHub", handle: "@aaravmehta", url: "https://github.com/" },
   { label: "LinkedIn", handle: "in/aaravmehta", url: "https://linkedin.com/" },
-  { label: "Instagram", handle: "@aarav.builds", url: "https://instagram.com/" },
+  {
+    label: "Instagram",
+    handle: "@aarav.builds",
+    url: "https://instagram.com/",
+  },
   { label: "LeetCode", handle: "@aaravm", url: "https://leetcode.com/" },
 ];
 

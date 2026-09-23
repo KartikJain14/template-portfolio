@@ -26,15 +26,8 @@ const meta = [
 ---
 
 <section class="hero" id="top">
-  <div class="hero__glow" aria-hidden="true"></div>
-
   <div class="container hero__inner">
     <div class="hero__body">
-      <p class="hero__eyebrow">
-        {profile.status && <span class="pill"><span class="pill__dot"></span>{profile.status}</span>}
-        {profile.location && <span class="eyebrow">{profile.location}</span>}
-      </p>
-
       <h1 class="display hero__name" style={`--name-scale:${nameScale}`}>
         {words.map((word, i) => (
           <span class="hero__word"><span style={`--i:${i}`}>{word}</span></span>
@@ -101,7 +94,6 @@ const meta = [
   </div>
 
   <div class="hero__cue" aria-hidden="true">
-    <span class="eyebrow">Scroll</span>
     <span class="hero__cue-line"></span>
   </div>
 </section>
@@ -112,29 +104,6 @@ const meta = [
     padding-top: clamp(3rem, 7vw, 6rem);
     padding-bottom: clamp(3.5rem, 8vw, 7rem);
     overflow: clip;
-  }
-
-  .hero__glow {
-    position: absolute;
-    top: -30%;
-    right: -10%;
-    width: min(70rem, 110vw);
-    aspect-ratio: 1;
-    pointer-events: none;
-    background: radial-gradient(
-      circle at center,
-      color-mix(in srgb, var(--accent) 26%, transparent) 0%,
-      transparent 62%
-    );
-    opacity: 0.55;
-    filter: blur(40px);
-    animation: drift 18s var(--ease) infinite alternate;
-  }
-
-  :global([data-theme="dark"]) .hero__glow { opacity: 0.4; }
-
-  @keyframes drift {
-    to { transform: translate3d(-6%, 5%, 0) scale(1.12); }
   }
 
   .hero__inner {
@@ -152,7 +121,6 @@ const meta = [
 
   /* Entrance ---------------------------------------------------------- */
 
-  .hero__eyebrow,
   .hero__role,
   .hero__tagline,
   .hero__actions,
@@ -162,7 +130,6 @@ const meta = [
     animation: rise 0.9s var(--ease-out) forwards;
   }
 
-  .hero__eyebrow { animation-delay: 0.05s; }
   .hero__role    { animation-delay: 0.42s; }
   .hero__tagline { animation-delay: 0.5s; }
   .hero__actions { animation-delay: 0.58s; }
@@ -174,57 +141,11 @@ const meta = [
     to   { opacity: 1; transform: none; }
   }
 
-  /* Status pill ------------------------------------------------------- */
-
-  .hero__eyebrow {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.75rem 1rem;
-    margin-bottom: clamp(1.25rem, 3vw, 2rem);
-  }
-
-  .pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.35rem 0.8rem 0.35rem 0.65rem;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    background: var(--surface);
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--ink-2);
-  }
-
-  .pill__dot {
-    position: relative;
-    width: 0.4rem;
-    height: 0.4rem;
-    border-radius: 999px;
-    background: #22A06B;
-  }
-
-  .pill__dot::after {
-    content: "";
-    position: absolute;
-    inset: -0.18rem;
-    border-radius: 999px;
-    border: 1.5px solid #22A06B;
-    animation: ping 2.4s var(--ease) infinite;
-  }
-
-  @keyframes ping {
-    0%   { transform: scale(0.6); opacity: 0.9; }
-    70%  { transform: scale(1.6); opacity: 0; }
-    100% { transform: scale(1.6); opacity: 0; }
-  }
-
   /* Name -------------------------------------------------------------- */
 
   .hero__name {
-    font-size: calc(clamp(2.75rem, 0.5rem + 11vw, 9.5rem) * var(--name-scale, 1));
-    margin-bottom: clamp(1rem, 2.5vw, 1.75rem);
+    font-size: calc(clamp(2.65rem, 0.65rem + 9.2vw, 8rem) * var(--name-scale, 1));
+    margin-bottom: clamp(0.8rem, 2vw, 1.35rem);
   }
 
   .hero__word {
@@ -253,11 +174,11 @@ const meta = [
 
   .hero__role {
     font-family: var(--font-mono);
-    font-size: 0.8rem;
-    letter-spacing: 0.14em;
+    font-size: 0.76rem;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--accent);
-    margin-bottom: 1.1rem;
+    margin-bottom: 0.85rem;
   }
 
   .hero__tagline { max-width: 46ch; }
@@ -265,20 +186,20 @@ const meta = [
   .hero__actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.7rem;
-    margin-top: clamp(1.75rem, 4vw, 2.5rem);
+    gap: 0.55rem;
+    margin-top: clamp(1.35rem, 3vw, 2rem);
   }
 
   .hero__socials {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.6rem 1.5rem;
-    margin-top: clamp(1.75rem, 4vw, 2.5rem);
-    padding-top: 1.5rem;
+    gap: 0.5rem 1.15rem;
+    margin-top: clamp(1.35rem, 3vw, 2rem);
+    padding-top: 1.1rem;
     border-top: 1px solid var(--line-soft);
     list-style: none;
     padding-left: 0;
-    font-size: 0.9rem;
+    font-size: 0.86rem;
     color: var(--ink-2);
   }
 
@@ -307,14 +228,13 @@ const meta = [
     display: grid;
     place-items: center;
     aspect-ratio: 1 / 1;
-    background:
-      radial-gradient(120% 90% at 20% 0%, color-mix(in srgb, var(--accent) 30%, transparent), transparent 60%),
-      var(--bg-soft);
+    background: var(--bg-soft);
   }
 
   .portrait__fallback span {
     font-family: var(--font-display);
-    font-size: clamp(4rem, 12vw, 6.5rem);
+    font-weight: 500;
+    font-size: clamp(3.5rem, 10vw, 5.5rem);
     line-height: 1;
     color: var(--ink);
     opacity: 0.9;
@@ -330,8 +250,8 @@ const meta = [
     align-items: baseline;
     justify-content: space-between;
     gap: 1rem;
-    padding: 0.7rem 1.15rem;
-    font-size: 0.875rem;
+    padding: 0.6rem 1rem;
+    font-size: 0.82rem;
   }
 
   .portrait__row + .portrait__row { border-top: 1px solid var(--line-soft); }
@@ -341,7 +261,7 @@ const meta = [
     text-align: right;
     color: var(--ink);
     font-weight: 500;
-    letter-spacing: -0.01em;
+    letter-spacing: 0.01em;
   }
 
   /* Scroll cue ---------------------------------------------------------- */
@@ -367,7 +287,7 @@ const meta = [
 
   .hero__cue-line {
     position: relative;
-    width: 3.5rem;
+    width: 2rem;
     height: 1px;
     background: var(--line);
     overflow: hidden;
