@@ -284,13 +284,13 @@ export const site = {
   // Your live address. Leave "" until you have deployed.
   // GitHub Pages gives you:  https://YOUR-USERNAME.github.io
   // (no slash at the end)
-  url: "",
+  url: "https://KartikJain14.github.io",
 
   // Only needed for GitHub Pages.
   //   Repository named  YOUR-USERNAME.github.io  ->  leave as ""
   //   Any other repository name                 ->  "/your-repo-name"
   // Get this wrong and the page loads without styling. See the README.
-  base: "",
+  base: "/template-portfolio",
 
   title: "Aarav Mehta — Computer Science Undergraduate",
 
