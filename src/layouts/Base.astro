@@ -98,11 +98,10 @@ const accentCss = `:root{--accent:${theme.accent};}[data-theme="dark"]{--accent:
     <meta name="theme-color" content="#FBFAF7" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0D0C0B" media="(prefers-color-scheme: dark)" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://api.fontshare.com" />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://api.fontshare.com/v2/css?f[]=satoshi@1&display=swap"
     />
 
     <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)}></script>
@@ -131,8 +130,6 @@ const accentCss = `:root{--accent:${theme.accent};}[data-theme="dark"]{--accent:
 <body>
     <a class="skip" href="#main">Skip to content</a>
 
-    <div class="scroll-progress" aria-hidden="true"><span></span></div>
-
     <Nav navItems={navItems} />
 
     <main id="main">
@@ -158,26 +155,6 @@ const accentCss = `:root{--accent:${theme.accent};}[data-theme="dark"]{--accent:
       } else {
         revealables.forEach((el) => el.classList.add("is-in"));
       }
-
-      // ---- Scroll progress bar ---------------------------------------------
-      const bar = document.querySelector(".scroll-progress span");
-      const nav = document.querySelector(".site-nav");
-      let ticking = false;
-
-      function onScroll() {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(() => {
-          const max = document.documentElement.scrollHeight - window.innerHeight;
-          const ratio = max > 0 ? window.scrollY / max : 0;
-          if (bar) bar.style.transform = `scaleX(${ratio})`;
-          if (nav) nav.classList.toggle("is-stuck", window.scrollY > 24);
-          ticking = false;
-        });
-      }
-
-      window.addEventListener("scroll", onScroll, { passive: true });
-      onScroll();
 
       // ---- Which section am I in? ------------------------------------------
       const links = Array.from(document.querySelectorAll("[data-nav-link]"));
@@ -224,7 +201,7 @@ const accentCss = `:root{--accent:${theme.accent};}[data-theme="dark"]{--accent:
         transform: translate(-50%, -140%);
         z-index: 300;
         padding: 0.7rem 1.2rem;
-        border-radius: 0 0 0.75rem 0.75rem;
+        border-radius: 999px;
         background: var(--ink);
         color: var(--bg);
         font-size: 0.875rem;
@@ -232,22 +209,6 @@ const accentCss = `:root{--accent:${theme.accent};}[data-theme="dark"]{--accent:
       }
 
       .skip:focus-visible { transform: translate(-50%, 0); }
-
-      .scroll-progress {
-        position: fixed;
-        inset: 0 0 auto 0;
-        height: 2px;
-        z-index: 120;
-        pointer-events: none;
-      }
-
-      .scroll-progress span {
-        display: block;
-        height: 100%;
-        background: var(--accent);
-        transform: scaleX(0);
-        transform-origin: left;
-      }
     </style>
   </body>
 </html>

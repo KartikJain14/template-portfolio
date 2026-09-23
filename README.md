@@ -358,7 +358,7 @@ public/                          your photo, resume, and anything else you add
 
 To **reorder sections**, move the blocks around in `src/pages/index.astro`.
 
-To **change the fonts**, edit the Google Fonts link in `src/layouts/Base.astro` and the
+To **change the fonts**, edit the stylesheet link in `src/layouts/Base.astro` and the
 `--font-*` lines near the top of `src/styles/global.css`.
 
 ---
