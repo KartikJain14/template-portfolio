@@ -2,17 +2,20 @@
 // The strip of words that scrolls under the hero.
 // It reuses the "title" of each quality, so there is nothing extra to fill in.
 const { items = [] } = Astro.props;
-const loop = [...items, ...items];
 ---
 
 {items.length > 0 && (
   <div class="ticker" aria-hidden="true">
     <div class="ticker__track">
-      {loop.map((item) => (
-        <span class="ticker__item">
-          {item}
-          <span class="ticker__dot"></span>
-        </span>
+      {[0, 1].map(() => (
+        <div class="ticker__group">
+          {items.map((item) => (
+            <span class="ticker__item">
+              {item}
+              <span class="ticker__dot"></span>
+            </span>
+          ))}
+        </div>
       ))}
     </div>
   </div>
@@ -34,6 +37,17 @@ const loop = [...items, ...items];
     display: flex;
     width: max-content;
     animation: scroll 38s linear infinite;
+  }
+
+  /* Two identical groups sit side by side and the track slides left by exactly
+     one group, so the second lands where the first began and the loop is
+     seamless. Each group is forced to at least a full screen wide — otherwise
+     a short list runs out before the slide finishes and leaves a visible gap. */
+  .ticker__group {
+    display: flex;
+    flex: none;
+    min-width: 100vw;
+    justify-content: space-around;
   }
 
   .ticker:hover .ticker__track { animation-play-state: paused; }
