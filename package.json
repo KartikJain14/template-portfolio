@@ -1,7 +1,22 @@
 {
   "name": "portfolio",
+  "description": "A minimal, beginner-friendly one-page portfolio template built with Astro.",
   "type": "module",
   "version": "0.0.1",
+  "license": "MIT",
+  "author": "Kartik Jain <https://jkartik.in>",
+  "homepage": "https://github.com/KartikJain14/template-portfolio",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KartikJain14/template-portfolio.git"
+  },
+  "keywords": [
+    "astro",
+    "portfolio",
+    "template",
+    "student",
+    "one-page"
+  ],
   "engines": {
     "node": ">=22.12.0"
   },

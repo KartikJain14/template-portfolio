@@ -36,9 +36,11 @@ const initials = profile.name
         </svg>
       </button>
 
-      <button class="icon-btn menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
-        <span></span><span></span>
-      </button>
+      {navItems.length > 0 && (
+        <button class="icon-btn menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+          <span></span><span></span>
+        </button>
+      )}
     </div>
   </div>
 
@@ -77,6 +79,8 @@ const initials = profile.name
   menuToggle?.addEventListener("click", () => {
     setMenu(!nav?.classList.contains("is-open"));
   });
+
+  // Nothing below runs when there is no menu button (for example on the 404 page).
 
   menu?.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", () => setMenu(false));

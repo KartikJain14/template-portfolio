@@ -18,6 +18,17 @@ const year = new Date().getFullYear();
       </svg>
     </a>
   </div>
+
+  <div class="container foot__credit">
+    <p>
+      Template made at PFE by{" "}
+      <a class="link" href="https://mpstmeacm.com" target="_blank" rel="noopener">MPSTME ACM</a>,{" "}
+      built by{" "}
+      <a class="link" href="https://jkartik.in" target="_blank" rel="noopener">Kartik</a>
+      <span class="foot__sep">·</span>
+      <a class="link" href="https://github.com/KartikJain14/template-portfolio" target="_blank" rel="noopener">KartikJain14/template-portfolio</a>
+    </p>
+  </div>
 </footer>
 
 <style>
@@ -52,4 +63,21 @@ const year = new Date().getFullYear();
 
   .foot__top:hover { color: var(--ink); }
   .foot__top:hover svg { transform: translateY(-3px); }
+
+  /* Template credit — deliberately quiet, below everything else. */
+  .foot__credit {
+    padding-bottom: 1.5rem;
+    margin-top: -0.5rem;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .foot__credit p {
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+    text-wrap: pretty;
+  }
+
+  .foot__sep { padding-inline: 0.35rem; opacity: 0.6; }
 </style>

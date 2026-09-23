@@ -273,13 +273,36 @@ export const socials = [
 ];
 
 /* ==========================================================================
-   10. BROWSER TAB & GOOGLE PREVIEW
+   10. BROWSER TAB, GOOGLE & LINK PREVIEWS
+
+   "url" is the one line worth coming back for. Fill it in AFTER you put the
+   site online (step 3 of the README) — it switches on the sitemap, the
+   canonical link and the preview card that WhatsApp and LinkedIn show.
    ========================================================================== */
 
 export const site = {
+  // Your live address. Leave "" until you have deployed.
+  // GitHub Pages gives you:  https://YOUR-USERNAME.github.io
+  // (no slash at the end)
+  url: "",
+
+  // Only needed for GitHub Pages.
+  //   Repository named  YOUR-USERNAME.github.io  ->  leave as ""
+  //   Any other repository name                 ->  "/your-repo-name"
+  // Get this wrong and the page loads without styling. See the README.
+  base: "",
+
   title: "Aarav Mehta — Computer Science Undergraduate",
+
   description:
     "Portfolio of Aarav Mehta, a B.Tech Computer Science student at Sunrise Institute of Technology. Projects, experience and achievements.",
+
+  // The picture people see when your link is shared in a chat.
+  // Swap in your own by putting a 1200x630 image in the "public" folder.
+  ogImage: "/og.png",
+
+  // Used by search engines and screen readers.
+  language: "en",
 };
 
 /* ==========================================================================

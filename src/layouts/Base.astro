@@ -1,29 +1,102 @@
 ---
 import "../styles/global.css";
-import { theme, profile, site } from "../data/portfolio.js";
+import { theme, profile, site, contact, socials, skills } from "../data/portfolio.js";
 import Nav from "../components/Nav.astro";
 
-const { navItems = [] } = Astro.props;
+const { navItems = [], pageTitle, pageDescription, noindex = false } = Astro.props;
+
+const title = pageTitle || site.title;
+const description = pageDescription || site.description;
+const lang = site.language || "en";
+
+// On GitHub Pages the site can live in a sub-folder, so every asset path has
+// to be prefixed. BASE_URL is "/" normally, or "/your-repo/" when base is set.
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const asset = (path) => `${base}${path}`;
+
+// Absolute URLs for the social tags. Crawlers reject relative ones, so these
+// only appear once you have filled in `url` in src/data/portfolio.js.
+const origin = Astro.site;
+const canonical = origin ? new URL(`${base}/`, origin).href : undefined;
+const ogImage = origin ? new URL(asset(site.ogImage || "/og.png"), origin).href : undefined;
+const photoUrl = origin && profile.photo ? new URL(asset(profile.photo), origin).href : undefined;
+
+// Structured data: this is what lets Google show you as a person rather than
+// just a page. Empty fields are dropped so nothing ships half-filled.
+const jsonLd = Object.fromEntries(
+  Object.entries({
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: profile.name,
+    jobTitle: profile.role,
+    description: site.description,
+    email: contact.email ? `mailto:${contact.email}` : undefined,
+    url: canonical,
+    image: photoUrl,
+    homeLocation: profile.location
+      ? { "@type": "Place", name: profile.location }
+      : undefined,
+    alumniOf: profile.college
+      ? { "@type": "CollegeOrUniversity", name: profile.college }
+      : undefined,
+    knowsAbout: skills.flatMap((group) => group.items),
+    sameAs: socials.map((social) => social.url).filter(Boolean),
+  }).filter(([, value]) =>
+    value !== undefined && value !== "" && !(Array.isArray(value) && value.length === 0),
+  ),
+);
 
 const accentCss = `:root{--accent:${theme.accent};}[data-theme="dark"]{--accent:${theme.accentDark || theme.accent};}`;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{site.title}</title>
-    <meta name="description" content={site.description} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
     <meta name="author" content={profile.name} />
+    <meta name="generator" content={Astro.generator} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta
+      name="robots"
+      content={noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large, max-snippet:-1"}
+    />
 
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content={site.title} />
-    <meta property="og:description" content={site.description} />
-    <meta name="twitter:card" content="summary_large_image" />
+    {/* Open Graph — WhatsApp, LinkedIn, Facebook, Slack, Discord */}
+    <meta property="og:type" content="profile" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content={profile.name} />
+    <meta property="og:locale" content={lang.replace("-", "_")} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    {ogImage && (
+      <>
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={`${profile.name} — ${profile.role}`} />
+      </>
+    )}
+    {profile.name.split(" ")[0] && <meta property="profile:first_name" content={profile.name.split(" ")[0]} />}
 
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta name="theme-color" content={theme.accent} />
+    {/* Twitter / X */}
+    <meta name="twitter:card" content={ogImage ? "summary_large_image" : "summary"} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
+    {ogImage && <meta name="twitter:image:alt" content={`${profile.name} — ${profile.role}`} />}
+
+    {/* Icons and install metadata */}
+    <link rel="icon" href={asset("/favicon.svg")} type="image/svg+xml" />
+    <link rel="icon" href={asset("/favicon.ico")} sizes="32x32" />
+    <link rel="apple-touch-icon" href={asset("/apple-touch-icon.png")} />
+    <link rel="manifest" href={asset("/manifest.webmanifest")} />
+    <meta name="apple-mobile-web-app-title" content={profile.shortName || profile.name} />
+    <meta name="theme-color" content="#FBFAF7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0D0C0B" media="(prefers-color-scheme: dark)" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -31,6 +104,8 @@ const accentCss = `:root{--accent:${theme.accent};}[data-theme="dark"]{--accent:
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
     />
+
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)}></script>
 
     <style is:global set:html={accentCss}></style>
 
@@ -53,7 +128,7 @@ const accentCss = `:root{--accent:${theme.accent};}[data-theme="dark"]{--accent:
     </script>
   </head>
 
-  <body>
+<body>
     <a class="skip" href="#main">Skip to content</a>
 
     <div class="scroll-progress" aria-hidden="true"><span></span></div>

@@ -1,0 +1,49 @@
+---
+import Base from "../layouts/Base.astro";
+import { profile, site } from "../data/portfolio.js";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+<Base
+  navItems={[]}
+  pageTitle={`Page not found — ${profile.name}`}
+  pageDescription="That page does not exist."
+  noindex={true}
+>
+  <section class="notfound">
+    <div class="container notfound__inner">
+      <p class="eyebrow">Error 404</p>
+      <h1 class="display notfound__code">404</h1>
+      <p class="lead notfound__text">
+        That page does not exist — it may have been renamed, or the link that brought
+        you here has a typo in it.
+      </p>
+      <a class="btn btn--accent" href={`${base}/`}>
+        Back to the homepage
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M7 17 17 7M8 7h9v9" />
+        </svg>
+      </a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .notfound {
+    display: flex;
+    align-items: center;
+    min-height: calc(100svh - 4.5rem);
+    padding-block: clamp(3rem, 10vw, 6rem);
+  }
+
+  .notfound__code {
+    font-size: clamp(5rem, 2rem + 18vw, 14rem);
+    margin: 0.5rem 0 1.25rem;
+  }
+
+  .notfound__text {
+    max-width: 44ch;
+    margin-bottom: clamp(1.75rem, 4vw, 2.5rem);
+  }
+</style>

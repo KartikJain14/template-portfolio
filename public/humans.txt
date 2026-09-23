@@ -1,0 +1,15 @@
+/* TEMPLATE */
+    Name: template-portfolio
+    Site: https://github.com/KartikJain14/template-portfolio
+    Made at: PFE, by MPSTME ACM -- https://mpstmeacm.com
+
+/* AUTHOR */
+    Kartik Jain -- https://jkartik.in
+    GitHub: @KartikJain14
+
+/* TECHNOLOGY */
+    Astro, HTML, CSS, JavaScript
+    Type: Instrument Serif, Inter, JetBrains Mono
+
+/* NOTE */
+    Add yourself here -- this file is for the humans who built the site.
