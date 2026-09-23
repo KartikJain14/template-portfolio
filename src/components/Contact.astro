@@ -1,0 +1,179 @@
+---
+import { contact, socials, profile } from "../data/portfolio.js";
+---
+
+<div class="contact">
+  <div class="contact__main">
+    {contact.note && <p class="contact__note" data-reveal>{contact.note}</p>}
+
+    <div class="contact__mail" data-reveal style="--reveal-delay:0.1s">
+      <a class="contact__address" href={`mailto:${contact.email}`}>{contact.email}</a>
+
+      <button class="copy" type="button" data-copy={contact.email}>
+        <span class="copy__idle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="9" y="9" width="11" height="11" rx="2.5" />
+            <path d="M5.5 15H5a1.8 1.8 0 0 1-1.8-1.8V5A1.8 1.8 0 0 1 5 3.2h8.2A1.8 1.8 0 0 1 15 5v.5" />
+          </svg>
+          Copy
+        </span>
+        <span class="copy__done">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m4.5 12.5 5 5 10-11" />
+          </svg>
+          Copied
+        </span>
+      </button>
+    </div>
+
+    {profile.resume && (
+      <p class="contact__resume" data-reveal style="--reveal-delay:0.15s">
+        <a class="btn btn--ghost" href={profile.resume} target="_blank" rel="noopener">Download résumé</a>
+      </p>
+    )}
+  </div>
+
+  {socials.length > 0 && (
+    <ul class="socials" data-reveal style="--reveal-delay:0.2s">
+      {socials.map((social) => (
+        <li>
+          <a class="social" href={social.url} target="_blank" rel="noopener">
+            <span class="social__label">{social.label}</span>
+            {social.handle && <span class="social__handle">{social.handle}</span>}
+            <svg class="social__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 17 17 7M8 7h9v9" />
+            </svg>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )}
+</div>
+
+<style>
+  .contact {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 4rem);
+    align-items: start;
+  }
+
+  /* Wide screens: the note and address sit beside the list of links, so the
+     section fills its width instead of stranding half the page empty. */
+  @media (min-width: 62rem) {
+    .contact { grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr); }
+  }
+
+  .contact__note {
+    max-width: 46ch;
+    font-size: clamp(1.0625rem, 1rem + 0.35vw, 1.2rem);
+    line-height: 1.65;
+    color: var(--ink-2);
+    text-wrap: pretty;
+  }
+
+  /* Email --------------------------------------------------------------- */
+
+  .contact__mail {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.25rem;
+    margin-top: clamp(1.75rem, 4vw, 2.5rem);
+  }
+
+  .contact__address {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 1.1rem + 2.6vw, 3.1rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    /* Wrap long addresses instead of pushing the page sideways. */
+    overflow-wrap: anywhere;
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0% 2px;
+    transition: background-size 0.5s var(--ease-out), color 0.3s var(--ease);
+  }
+
+  .contact__address:hover {
+    color: var(--accent);
+    background-size: 100% 2px;
+  }
+
+  .copy {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    padding: 0.5rem 0.95rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 0.82rem;
+    color: var(--muted);
+    transition: border-color 0.25s var(--ease), color 0.25s var(--ease);
+  }
+
+  .copy:hover { border-color: var(--ink); color: var(--ink); }
+
+  .copy span {
+    grid-area: 1 / 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: opacity 0.25s var(--ease), transform 0.3s var(--ease-out);
+  }
+
+  .copy svg { width: 0.85rem; height: 0.85rem; }
+
+  .copy__done { opacity: 0; transform: translateY(0.4rem); color: var(--accent); }
+
+  .copy.is-copied .copy__idle { opacity: 0; transform: translateY(-0.4rem); }
+  .copy.is-copied .copy__done { opacity: 1; transform: none; }
+
+  .contact__resume { margin-top: 1.75rem; }
+
+  /* Socials -------------------------------------------------------------- */
+
+  .socials {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--line);
+  }
+
+  .social {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: clamp(0.9rem, 2.2vw, 1.25rem) 0.25rem;
+    border-bottom: 1px solid var(--line);
+    transition: padding-left 0.4s var(--ease-out), color 0.3s var(--ease);
+  }
+
+  .social:hover { padding-left: 1rem; color: var(--accent); }
+
+  .social__label {
+    font-size: clamp(1.05rem, 1rem + 0.5vw, 1.3rem);
+    font-weight: 500;
+    letter-spacing: -0.015em;
+  }
+
+  .social__handle {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .social__arrow {
+    width: 1.05rem;
+    height: 1.05rem;
+    margin-left: auto;
+    flex: none;
+    opacity: 0.45;
+    transition: transform 0.4s var(--ease-out), opacity 0.3s var(--ease);
+  }
+
+  .social:hover .social__arrow { opacity: 1; transform: translate(3px, -3px); }
+</style>

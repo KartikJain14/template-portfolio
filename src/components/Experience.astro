@@ -1,0 +1,181 @@
+---
+import { experience } from "../data/portfolio.js";
+---
+
+<ol class="timeline">
+  {experience.map((job, i) => (
+    <li class="tl" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
+      <div class="tl__marker" aria-hidden="true"><span></span></div>
+
+      <div class="tl__period">
+        <span class="eyebrow">{job.period}</span>
+        {job.current && <span class="tl__now">Now</span>}
+      </div>
+
+      <div class="tl__body">
+        <h3 class="tl__role">{job.role}</h3>
+
+        <p class="tl__org">
+          <span class="tl__orgname">{job.org}</span>
+          {job.department && <span class="tl__dept">{job.department}</span>}
+        </p>
+
+        {job.points?.length > 0 && (
+          <ul class="tl__points">
+            {job.points.map((point) => <li>{point}</li>)}
+          </ul>
+        )}
+      </div>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .tl {
+    position: relative;
+    display: grid;
+    gap: 0.5rem 2.5rem;
+    padding: 0 0 clamp(2.25rem, 5vw, 3.25rem) 1.75rem;
+  }
+
+  .tl:last-child { padding-bottom: 0; }
+
+  /* The vertical rule, drawn as a border on each row. */
+  .tl::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--line);
+  }
+
+  /* Start below the first disc, and stop the line after the last one. */
+  .tl:first-child::before { top: 0.95rem; }
+  .tl:last-child::before { bottom: auto; height: 0; }
+
+  @media (min-width: 52rem) {
+    .tl {
+      grid-template-columns: 11rem minmax(0, 1fr);
+      align-items: start;
+      padding-left: 2.5rem;
+    }
+
+    .tl__period { padding-top: 0.55rem; }
+  }
+
+  /* Marker --------------------------------------------------------------- */
+
+  .tl__marker {
+    position: absolute;
+    left: 0;
+    top: 0.45rem;
+    transform: translateX(-50%);
+    display: grid;
+    place-items: center;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 999px;
+    background: var(--bg);
+  }
+
+  .tl__marker span {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--muted);
+    transition: background-color 0.35s var(--ease), border-color 0.35s var(--ease),
+                transform 0.35s var(--ease-out);
+  }
+
+  .tl:hover .tl__marker span {
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: scale(1.25);
+  }
+
+  /* Period --------------------------------------------------------------- */
+
+  .tl__period {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding-top: 0.2rem;
+  }
+
+  .tl__now {
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* Body ----------------------------------------------------------------- */
+
+  .tl__role {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.45rem, 1.2rem + 1vw, 1.95rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  .tl__org {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.3rem;
+    font-size: 0.95rem;
+  }
+
+  .tl__orgname { font-weight: 500; color: var(--ink); }
+
+  .tl__dept { color: var(--muted); }
+
+  @media (min-width: 30rem) {
+    .tl__dept {
+      padding-left: 0.6rem;
+      border-left: 1px solid var(--line);
+    }
+  }
+
+  .tl__points {
+    display: grid;
+    gap: 0.45rem;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+    max-width: 60ch;
+    color: var(--ink-2);
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .tl__points li {
+    position: relative;
+    padding-left: 1.1rem;
+    text-wrap: pretty;
+  }
+
+  .tl__points li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 0.35rem;
+    height: 1px;
+    background: var(--accent);
+  }
+</style>

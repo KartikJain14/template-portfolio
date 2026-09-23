@@ -1,0 +1,401 @@
+---
+import { profile, socials, contact } from "../data/portfolio.js";
+
+const { cta } = Astro.props;
+
+const words = profile.name.split(" ").filter(Boolean);
+
+// A very long name would otherwise run past the edge of its column. About ten
+// characters fit on one line at full size, so longer names are scaled down to
+// match. Short names are left alone (scale 1).
+const longestWord = Math.max(1, ...words.map((word) => word.length));
+const nameScale = Math.max(0.3, Math.min(1, 10 / longestWord)).toFixed(3);
+
+const initials = words
+  .slice(0, 2)
+  .map((word) => word[0])
+  .join("")
+  .toUpperCase();
+
+// Only the lines that were actually filled in show up.
+const meta = [
+  { label: "Course", value: profile.course },
+  { label: "Campus", value: [profile.college, profile.campus].filter(Boolean).join(" · ") },
+  { label: "Batch", value: profile.batch },
+].filter((item) => item.value);
+---
+
+<section class="hero" id="top">
+  <div class="hero__glow" aria-hidden="true"></div>
+
+  <div class="container hero__inner">
+    <div class="hero__body">
+      <p class="hero__eyebrow">
+        {profile.status && <span class="pill"><span class="pill__dot"></span>{profile.status}</span>}
+        {profile.location && <span class="eyebrow">{profile.location}</span>}
+      </p>
+
+      <h1 class="display hero__name" style={`--name-scale:${nameScale}`}>
+        {words.map((word, i) => (
+          <span class="hero__word"><span style={`--i:${i}`}>{word}</span></span>
+        ))}
+      </h1>
+
+      {profile.role && <p class="hero__role">{profile.role}</p>}
+      {profile.tagline && <p class="lead hero__tagline">{profile.tagline}</p>}
+
+      <div class="hero__actions">
+        {cta && (
+          <a class="btn btn--accent" href={`#${cta.id}`}>
+            {cta.label}
+            <svg class="arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 17 17 7M8 7h9v9" />
+            </svg>
+          </a>
+        )}
+
+        <a class={cta ? "btn btn--ghost" : "btn btn--accent"} href={`mailto:${contact.email}`}>
+          Get in touch
+        </a>
+
+        {profile.resume && (
+          <a class="btn btn--ghost" href={profile.resume} target="_blank" rel="noopener">
+            Résumé
+          </a>
+        )}
+      </div>
+
+      {socials.length > 0 && (
+        <ul class="hero__socials">
+          {socials.map((social) => (
+            <li>
+              <a class="link" href={social.url} target="_blank" rel="noopener">{social.label}</a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+
+    <div class="hero__aside">
+      <figure class="portrait">
+        {profile.photo ? (
+          <img class="portrait__img" src={profile.photo} alt={profile.name} width="640" height="800" />
+        ) : (
+          <div class="portrait__fallback" aria-hidden="true">
+            <span>{initials}</span>
+          </div>
+        )}
+
+        {meta.length > 0 && (
+          <figcaption class="portrait__meta">
+            {meta.map((item) => (
+              <div class="portrait__row">
+                <dt class="eyebrow">{item.label}</dt>
+                <dd>{item.value}</dd>
+              </div>
+            ))}
+          </figcaption>
+        )}
+      </figure>
+    </div>
+  </div>
+
+  <div class="hero__cue" aria-hidden="true">
+    <span class="eyebrow">Scroll</span>
+    <span class="hero__cue-line"></span>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    padding-top: clamp(3rem, 7vw, 6rem);
+    padding-bottom: clamp(3.5rem, 8vw, 7rem);
+    overflow: clip;
+  }
+
+  .hero__glow {
+    position: absolute;
+    top: -30%;
+    right: -10%;
+    width: min(70rem, 110vw);
+    aspect-ratio: 1;
+    pointer-events: none;
+    background: radial-gradient(
+      circle at center,
+      color-mix(in srgb, var(--accent) 26%, transparent) 0%,
+      transparent 62%
+    );
+    opacity: 0.55;
+    filter: blur(40px);
+    animation: drift 18s var(--ease) infinite alternate;
+  }
+
+  :global([data-theme="dark"]) .hero__glow { opacity: 0.4; }
+
+  @keyframes drift {
+    to { transform: translate3d(-6%, 5%, 0) scale(1.12); }
+  }
+
+  .hero__inner {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 4.5rem);
+    align-items: end;
+  }
+
+  @media (min-width: 62rem) {
+    .hero__inner {
+      grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+      gap: clamp(3rem, 5vw, 5rem);
+    }
+  }
+
+  /* Entrance ---------------------------------------------------------- */
+
+  .hero__eyebrow,
+  .hero__role,
+  .hero__tagline,
+  .hero__actions,
+  .hero__socials,
+  .hero__aside {
+    opacity: 0;
+    animation: rise 0.9s var(--ease-out) forwards;
+  }
+
+  .hero__eyebrow { animation-delay: 0.05s; }
+  .hero__role    { animation-delay: 0.42s; }
+  .hero__tagline { animation-delay: 0.5s; }
+  .hero__actions { animation-delay: 0.58s; }
+  .hero__socials { animation-delay: 0.66s; }
+  .hero__aside   { animation-delay: 0.3s; }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(1.4rem); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* Status pill ------------------------------------------------------- */
+
+  .hero__eyebrow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    margin-bottom: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.8rem 0.35rem 0.65rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--ink-2);
+  }
+
+  .pill__dot {
+    position: relative;
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 999px;
+    background: #22A06B;
+  }
+
+  .pill__dot::after {
+    content: "";
+    position: absolute;
+    inset: -0.18rem;
+    border-radius: 999px;
+    border: 1.5px solid #22A06B;
+    animation: ping 2.4s var(--ease) infinite;
+  }
+
+  @keyframes ping {
+    0%   { transform: scale(0.6); opacity: 0.9; }
+    70%  { transform: scale(1.6); opacity: 0; }
+    100% { transform: scale(1.6); opacity: 0; }
+  }
+
+  /* Name -------------------------------------------------------------- */
+
+  .hero__name {
+    font-size: calc(clamp(2.75rem, 0.5rem + 11vw, 9.5rem) * var(--name-scale, 1));
+    margin-bottom: clamp(1rem, 2.5vw, 1.75rem);
+  }
+
+  .hero__word {
+    display: inline-block;
+    /* Clips at the top and bottom only, so the slide-up reveal works without
+       cutting a long name off at the side. */
+    clip-path: inset(0 -100vw);
+    vertical-align: bottom;
+    padding-right: 0.22em;
+    padding-bottom: 0.06em;
+    margin-bottom: -0.06em;
+  }
+
+  .hero__word > span {
+    display: inline-block;
+    transform: translateY(105%);
+    animation: curtain 1.05s var(--ease-out) forwards;
+    animation-delay: calc(var(--i) * 0.11s + 0.12s);
+  }
+
+  @keyframes curtain {
+    to { transform: none; }
+  }
+
+  /* Supporting copy ---------------------------------------------------- */
+
+  .hero__role {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.1rem;
+  }
+
+  .hero__tagline { max-width: 46ch; }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-top: clamp(1.75rem, 4vw, 2.5rem);
+  }
+
+  .hero__socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.5rem;
+    margin-top: clamp(1.75rem, 4vw, 2.5rem);
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line-soft);
+    list-style: none;
+    padding-left: 0;
+    font-size: 0.9rem;
+    color: var(--ink-2);
+  }
+
+  /* Portrait ----------------------------------------------------------- */
+
+  .portrait {
+    position: relative;
+    margin: 0;
+    border: 1px solid var(--line);
+    border-radius: 1.5rem;
+    background: var(--surface);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    transition: transform 0.6s var(--ease-out);
+  }
+
+  .portrait:hover { transform: translateY(-4px) rotate(-0.5deg); }
+
+  .portrait__img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+  }
+
+  .portrait__fallback {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1 / 1;
+    background:
+      radial-gradient(120% 90% at 20% 0%, color-mix(in srgb, var(--accent) 30%, transparent), transparent 60%),
+      var(--bg-soft);
+  }
+
+  .portrait__fallback span {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 12vw, 6.5rem);
+    line-height: 1;
+    color: var(--ink);
+    opacity: 0.9;
+  }
+
+  .portrait__meta {
+    display: grid;
+    border-top: 1px solid var(--line);
+  }
+
+  .portrait__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.7rem 1.15rem;
+    font-size: 0.875rem;
+  }
+
+  .portrait__row + .portrait__row { border-top: 1px solid var(--line-soft); }
+
+  .portrait__row dd {
+    margin: 0;
+    text-align: right;
+    color: var(--ink);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  /* Scroll cue ---------------------------------------------------------- */
+
+  .hero__cue {
+    display: none;
+    position: absolute;
+    left: 50%;
+    bottom: 1.5rem;
+    width: 100%;
+    max-width: var(--container);
+    padding-inline: var(--gutter);
+    transform: translateX(-50%);
+    align-items: center;
+    gap: 0.75rem;
+    opacity: 0;
+    animation: fade 1s var(--ease-out) 1.1s forwards;
+  }
+
+  @keyframes fade {
+    to { opacity: 1; }
+  }
+
+  .hero__cue-line {
+    position: relative;
+    width: 3.5rem;
+    height: 1px;
+    background: var(--line);
+    overflow: hidden;
+  }
+
+  .hero__cue-line::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    transform-origin: left;
+    animation: sweep 2.6s var(--ease) infinite;
+  }
+
+  @keyframes sweep {
+    0%   { transform: scaleX(0); transform-origin: left; }
+    45%  { transform: scaleX(1); transform-origin: left; }
+    55%  { transform: scaleX(1); transform-origin: right; }
+    100% { transform: scaleX(0); transform-origin: right; }
+  }
+
+  @media (min-width: 62rem) {
+    .portrait__img,
+    .portrait__fallback { aspect-ratio: 4 / 5; }
+  }
+
+  @media (min-width: 62rem) and (min-height: 44rem) {
+    .hero { display: flex; flex-direction: column; justify-content: center; min-height: calc(100svh - 4.5rem); }
+    .hero__cue { display: flex; }
+  }
+</style>

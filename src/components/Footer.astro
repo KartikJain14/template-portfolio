@@ -1,0 +1,55 @@
+---
+import { profile } from "../data/portfolio.js";
+const year = new Date().getFullYear();
+---
+
+<footer class="foot">
+  <div class="container foot__inner">
+    <p class="foot__copy">© {year} {profile.name}</p>
+
+    <p class="foot__made">
+      Built with <a class="link" href="https://astro.build" target="_blank" rel="noopener">Astro</a>
+    </p>
+
+    <a class="foot__top" href="#top">
+      Back to top
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 19V5M6 11l6-6 6 6" />
+      </svg>
+    </a>
+  </div>
+</footer>
+
+<style>
+  .foot {
+    border-top: 1px solid var(--line);
+    background: var(--bg-soft);
+  }
+
+  .foot__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+    padding-block: 1.75rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .foot__top {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    transition: color 0.25s var(--ease);
+  }
+
+  .foot__top svg {
+    width: 0.85rem;
+    height: 0.85rem;
+    transition: transform 0.35s var(--ease-out);
+  }
+
+  .foot__top:hover { color: var(--ink); }
+  .foot__top:hover svg { transform: translateY(-3px); }
+</style>

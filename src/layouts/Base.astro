@@ -1,0 +1,178 @@
+---
+import "../styles/global.css";
+import { theme, profile, site } from "../data/portfolio.js";
+import Nav from "../components/Nav.astro";
+
+const { navItems = [] } = Astro.props;
+
+const accentCss = `:root{--accent:${theme.accent};}[data-theme="dark"]{--accent:${theme.accentDark || theme.accent};}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{site.title}</title>
+    <meta name="description" content={site.description} />
+    <meta name="author" content={profile.name} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={site.title} />
+    <meta property="og:description" content={site.description} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content={theme.accent} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+
+    <style is:global set:html={accentCss}></style>
+
+    {/* Runs before paint: no flash of the wrong theme, and it marks the
+        page as JavaScript-capable so the reveal animations can hide things. */}
+    <script is:inline>
+      (function () {
+        var root = document.documentElement;
+        root.classList.add("js");
+        try {
+          var saved = localStorage.getItem("theme");
+          var wantsDark =
+            saved === "dark" ||
+            (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches);
+          root.setAttribute("data-theme", wantsDark ? "dark" : "light");
+        } catch (e) {
+          root.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
+  </head>
+
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <div class="scroll-progress" aria-hidden="true"><span></span></div>
+
+    <Nav navItems={navItems} />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <script>
+      // ---- Reveal on scroll -------------------------------------------------
+      const revealables = document.querySelectorAll("[data-reveal]");
+
+      if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+              entry.target.classList.add("is-in");
+              observer.unobserve(entry.target);
+            }
+          },
+          { rootMargin: "0px 0px -10% 0px", threshold: 0.1 },
+        );
+        revealables.forEach((el) => observer.observe(el));
+      } else {
+        revealables.forEach((el) => el.classList.add("is-in"));
+      }
+
+      // ---- Scroll progress bar ---------------------------------------------
+      const bar = document.querySelector(".scroll-progress span");
+      const nav = document.querySelector(".site-nav");
+      let ticking = false;
+
+      function onScroll() {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          const max = document.documentElement.scrollHeight - window.innerHeight;
+          const ratio = max > 0 ? window.scrollY / max : 0;
+          if (bar) bar.style.transform = `scaleX(${ratio})`;
+          if (nav) nav.classList.toggle("is-stuck", window.scrollY > 24);
+          ticking = false;
+        });
+      }
+
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+
+      // ---- Which section am I in? ------------------------------------------
+      const links = Array.from(document.querySelectorAll("[data-nav-link]"));
+      const sections = links
+        .map((link) => document.querySelector(link.getAttribute("href")))
+        .filter(Boolean);
+
+      if (sections.length && "IntersectionObserver" in window) {
+        const spy = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+              const id = entry.target.id;
+              links.forEach((link) =>
+                link.toggleAttribute("data-active", link.getAttribute("href") === `#${id}`),
+              );
+            }
+          },
+          { rootMargin: "-45% 0px -50% 0px" },
+        );
+        sections.forEach((section) => spy.observe(section));
+      }
+
+      // ---- Copy email -------------------------------------------------------
+      document.querySelectorAll("[data-copy]").forEach((button) => {
+        button.addEventListener("click", async () => {
+          const value = button.getAttribute("data-copy");
+          try {
+            await navigator.clipboard.writeText(value);
+          } catch (e) {
+            return;
+          }
+          button.classList.add("is-copied");
+          window.setTimeout(() => button.classList.remove("is-copied"), 1800);
+        });
+      });
+    </script>
+
+    <style>
+      .skip {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        transform: translate(-50%, -140%);
+        z-index: 300;
+        padding: 0.7rem 1.2rem;
+        border-radius: 0 0 0.75rem 0.75rem;
+        background: var(--ink);
+        color: var(--bg);
+        font-size: 0.875rem;
+        transition: transform 0.3s var(--ease-out);
+      }
+
+      .skip:focus-visible { transform: translate(-50%, 0); }
+
+      .scroll-progress {
+        position: fixed;
+        inset: 0 0 auto 0;
+        height: 2px;
+        z-index: 120;
+        pointer-events: none;
+      }
+
+      .scroll-progress span {
+        display: block;
+        height: 100%;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+      }
+    </style>
+  </body>
+</html>

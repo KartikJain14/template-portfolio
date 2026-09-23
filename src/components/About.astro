@@ -1,0 +1,222 @@
+---
+import { about, qualities, skills } from "../data/portfolio.js";
+---
+
+<div class="about">
+  <div class="about__top">
+    <div class="about__prose" data-reveal>
+      {about.paragraphs.map((paragraph, i) => (
+        <p class={i === 0 ? "about__first" : undefined}>{paragraph}</p>
+      ))}
+    </div>
+
+    {about.facts.length > 0 && (
+      <aside class="about__facts card" data-reveal style="--reveal-delay:0.12s">
+        <p class="eyebrow about__facts-title">At a glance</p>
+        <dl>
+          {about.facts.map((fact) => (
+            <div class="about__fact">
+              <dt>{fact.label}</dt>
+              <dd>{fact.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </aside>
+    )}
+  </div>
+
+  {qualities.length > 0 && (
+    <ul class="qualities">
+      {qualities.map((quality, i) => (
+        <li class="quality" data-reveal style={`--reveal-delay:${i * 0.08}s`}>
+          <span class="quality__num">{String(i + 1).padStart(2, "0")}</span>
+          <h3 class="quality__title">{quality.title}</h3>
+          <p class="quality__text">{quality.text}</p>
+        </li>
+      ))}
+    </ul>
+  )}
+
+  {skills.length > 0 && (
+    <div class="skills" data-reveal>
+      <p class="eyebrow skills__title">Things I work with</p>
+      {skills.map((group) => (
+        <div class="skills__row">
+          <h3 class="skills__group">{group.group}</h3>
+          <ul class="skills__list">
+            {group.items.map((item) => (
+              <li class="tag">{item}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
+<style>
+  .about__top {
+    display: grid;
+    gap: clamp(2rem, 5vw, 3.5rem);
+    align-items: start;
+  }
+
+  @media (min-width: 55rem) {
+    .about__top { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); }
+  }
+
+  /* Bio ---------------------------------------------------------------- */
+
+  .about__prose {
+    display: grid;
+    gap: 1.25rem;
+    max-width: 62ch;
+    color: var(--ink-2);
+    font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.15rem);
+    line-height: 1.75;
+    text-wrap: pretty;
+  }
+
+  .about__first {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 1.1rem + 1.3vw, 1.95rem);
+    line-height: 1.32;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+
+  /* Facts -------------------------------------------------------------- */
+
+  .about__facts {
+    padding: 1.4rem 1.5rem 1.6rem;
+    position: sticky;
+    top: 6.5rem;
+  }
+
+  .about__facts-title { margin-bottom: 0.9rem; }
+
+  .about__fact {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.7rem 0;
+    font-size: 0.925rem;
+  }
+
+  .about__fact + .about__fact { border-top: 1px solid var(--line-soft); }
+
+  .about__fact dt { color: var(--muted); }
+
+  .about__fact dd {
+    margin: 0;
+    text-align: right;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  /* Qualities ---------------------------------------------------------- */
+
+  .qualities {
+    display: grid;
+    gap: 1px;
+    margin-top: clamp(3rem, 7vw, 5rem);
+    padding: 0;
+    list-style: none;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 1.25rem;
+    overflow: hidden;
+  }
+
+  @media (min-width: 40rem) {
+    .qualities { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (min-width: 68rem) {
+    .qualities { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  .quality {
+    position: relative;
+    padding: clamp(1.4rem, 3vw, 2rem);
+    background: var(--surface);
+    transition: background-color 0.35s var(--ease);
+  }
+
+  .quality::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s var(--ease-out);
+  }
+
+  .quality:hover { background: var(--bg-soft); }
+  .quality:hover::before { transform: scaleX(1); }
+
+  .quality__num {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--accent);
+  }
+
+  .quality__title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.5rem, 1.3rem + 0.8vw, 1.9rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin: 0.5rem 0 0.5rem;
+  }
+
+  .quality__text {
+    font-size: 0.925rem;
+    line-height: 1.6;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+
+  /* Skills -------------------------------------------------------------- */
+
+  .skills { margin-top: clamp(3rem, 7vw, 4.5rem); }
+
+  .skills__title { margin-bottom: 1.25rem; }
+
+  .skills__row {
+    display: grid;
+    gap: 0.75rem;
+    padding: 1.1rem 0;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .skills__row:last-child { border-bottom: 1px solid var(--line-soft); }
+
+  @media (min-width: 45rem) {
+    .skills__row {
+      grid-template-columns: 11rem minmax(0, 1fr);
+      align-items: baseline;
+      gap: 1.5rem;
+    }
+  }
+
+  .skills__group {
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  .skills__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .skills__list .tag:hover { border-color: var(--accent); color: var(--accent); }
+</style>

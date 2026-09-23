@@ -1,0 +1,207 @@
+---
+import { projects } from "../data/portfolio.js";
+---
+
+<div class="projects">
+  {projects.map((project, i) => (
+    <article class="proj" data-reveal>
+      <div class="proj__media">
+        {project.image ? (
+          <img src={project.image} alt={project.title} loading="lazy" width="960" height="720" />
+        ) : (
+          <div class="proj__placeholder" aria-hidden="true">
+            <span class="proj__letter">{project.title.trim().charAt(0).toUpperCase()}</span>
+          </div>
+        )}
+      </div>
+
+      <div class="proj__body">
+        <div class="proj__meta">
+          <span class="proj__index">{String(i + 1).padStart(2, "0")}</span>
+          {project.year && <span class="eyebrow">{project.year}</span>}
+        </div>
+
+        <h3 class="proj__title">{project.title}</h3>
+        <p class="proj__blurb">{project.blurb}</p>
+
+        {project.tags?.length > 0 && (
+          <ul class="proj__tags">
+            {project.tags.map((tag) => <li class="tag">{tag}</li>)}
+          </ul>
+        )}
+
+        {(project.link || project.code) && (
+          <div class="proj__links">
+            {project.link && (
+              <a class="proj__link" href={project.link} target="_blank" rel="noopener">
+                Visit site
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M7 17 17 7M8 7h9v9" />
+                </svg>
+              </a>
+            )}
+            {project.code && (
+              <a class="proj__link" href={project.code} target="_blank" rel="noopener">
+                Source code
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M7 17 17 7M8 7h9v9" />
+                </svg>
+              </a>
+            )}
+          </div>
+        )}
+      </div>
+    </article>
+  ))}
+</div>
+
+<style>
+  .projects {
+    display: grid;
+    gap: clamp(3rem, 7vw, 5.5rem);
+  }
+
+  .proj {
+    display: grid;
+    gap: clamp(1.25rem, 4vw, 3rem);
+    align-items: center;
+  }
+
+  @media (min-width: 55rem) {
+    .proj { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+
+    /* Flip every second project so the page zig-zags. */
+    .proj:nth-child(even) .proj__media { order: 2; }
+  }
+
+  /* Media ---------------------------------------------------------------- */
+
+  .proj__media {
+    position: relative;
+    border: 1px solid var(--line);
+    border-radius: 1.25rem;
+    overflow: hidden;
+    background: var(--bg-soft);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.6s var(--ease-out), box-shadow 0.6s var(--ease-out);
+  }
+
+  .proj:hover .proj__media {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .proj__media img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    transition: transform 0.8s var(--ease-out);
+  }
+
+  .proj:hover .proj__media img { transform: scale(1.035); }
+
+  /* Shown when no image was set — a deliberate panel, not an empty box. */
+  .proj__placeholder {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 4 / 3;
+    background:
+      radial-gradient(110% 80% at 15% 10%, color-mix(in srgb, var(--accent) 24%, transparent), transparent 58%),
+      linear-gradient(140deg, var(--bg-soft), var(--surface));
+  }
+
+  .proj__placeholder::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 2.75rem 2.75rem;
+    opacity: 0.4;
+    -webkit-mask-image: radial-gradient(75% 75% at 50% 50%, #000, transparent);
+    mask-image: radial-gradient(75% 75% at 50% 50%, #000, transparent);
+  }
+
+  .proj__letter {
+    position: relative;
+    font-family: var(--font-display);
+    font-size: clamp(4.5rem, 12vw, 7rem);
+    line-height: 1;
+    color: var(--ink);
+    opacity: 0.85;
+    transition: transform 0.7s var(--ease-out);
+  }
+
+  .proj:hover .proj__letter { transform: scale(1.06); }
+
+  /* Body ------------------------------------------------------------------ */
+
+  .proj__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .proj__index {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+  }
+
+  .proj__title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.8rem, 1.4rem + 1.8vw, 2.9rem);
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+
+  .proj__blurb {
+    margin-top: 0.85rem;
+    max-width: 48ch;
+    color: var(--ink-2);
+    line-height: 1.7;
+    text-wrap: pretty;
+  }
+
+  .proj__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin: 1.35rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .proj__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin-top: 1.6rem;
+  }
+
+  .proj__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.25s var(--ease), border-color 0.25s var(--ease);
+  }
+
+  .proj__link svg {
+    width: 0.85rem;
+    height: 0.85rem;
+    transition: transform 0.35s var(--ease-out);
+  }
+
+  .proj__link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  .proj__link:hover svg { transform: translate(2px, -2px); }
+</style>

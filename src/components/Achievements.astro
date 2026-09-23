@@ -1,0 +1,98 @@
+---
+import { achievements } from "../data/portfolio.js";
+---
+
+<ul class="awards">
+  {achievements.map((item, i) => (
+    <li class="award" data-reveal style={`--reveal-delay:${i * 0.07}s`}>
+      <div class="award__head">
+        <span class="award__year">{item.year}</span>
+        {item.tag && <span class="tag award__tag">{item.tag}</span>}
+      </div>
+
+      <h3 class="award__title">{item.title}</h3>
+      {item.detail && <p class="award__detail">{item.detail}</p>}
+
+      <span class="award__index" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .awards {
+    display: grid;
+    gap: 1px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 1.25rem;
+    overflow: hidden;
+  }
+
+  @media (min-width: 48rem) {
+    .awards { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .award {
+    position: relative;
+    padding: clamp(1.5rem, 3.5vw, 2.25rem);
+    background: var(--surface);
+    overflow: hidden;
+    transition: background-color 0.4s var(--ease);
+  }
+
+  .award:hover { background: var(--bg-soft); }
+
+  .award__head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .award__year {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+  }
+
+  .award__tag { font-size: 0.68rem; padding: 0.2rem 0.6rem; }
+
+  .award__title {
+    position: relative;
+    font-size: clamp(1.05rem, 1rem + 0.45vw, 1.3rem);
+    font-weight: 600;
+    line-height: 1.32;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  .award__detail {
+    position: relative;
+    margin-top: 0.6rem;
+    max-width: 48ch;
+    font-size: 0.925rem;
+    line-height: 1.65;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+
+  /* Big ghost numeral in the corner. */
+  .award__index {
+    position: absolute;
+    right: -0.5rem;
+    bottom: -1.75rem;
+    font-family: var(--font-display);
+    font-size: 7rem;
+    line-height: 1;
+    color: var(--ink);
+    opacity: 0.045;
+    pointer-events: none;
+    transition: transform 0.6s var(--ease-out), opacity 0.4s var(--ease);
+  }
+
+  .award:hover .award__index { transform: translate(-0.4rem, -0.4rem); opacity: 0.08; }
+</style>
