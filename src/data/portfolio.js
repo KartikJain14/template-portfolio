@@ -297,8 +297,9 @@ export const site = {
   description:
     "Portfolio of Aarav Mehta, a B.Tech Computer Science student at Sunrise Institute of Technology. Projects, experience and achievements.",
 
-  // The picture people see when your link is shared in a chat.
-  // Swap in your own by putting a 1200x630 image in the "public" folder.
+  // The picture people see when your link is shared in a chat. One is drawn
+  // for you in your accent colour. To use your own, put a 1200x630 image in
+  // the "public" folder and point this at it, e.g. "/my-card.jpg".
   ogImage: "/og.png",
 
   // Used by search engines and screen readers.

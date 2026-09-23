@@ -50,10 +50,14 @@ that list rather than hard-coding a section anywhere.
 
 ### Generated routes
 
-`robots.txt`, `sitemap.xml`, `manifest.webmanifest`, `favicon.svg` and
-`.well-known/security.txt` are Astro endpoints, not static files, because they
-read from `portfolio.js`. The favicon is drawn from the user's initial and accent
-colour; the manifest and security.txt from their name and email.
+`robots.txt`, `sitemap.xml`, `manifest.webmanifest`, `favicon.svg`,
+`favicon.ico`, the app icons, `og.png` and `.well-known/security.txt` are Astro
+endpoints, not static files, because they all read from `portfolio.js`.
+
+`src/lib/brand.ts` rasterises the PNG and ICO icons from the accent colour using
+signed distance fields and a small PNG encoder over `node:zlib` — no image
+library. Keep it dependency-free. Nothing in `public/` should duplicate one of
+these routes; a static file of the same name would shadow the endpoint.
 
 ### The base path
 
@@ -85,8 +89,11 @@ Any new endpoint or asset link needs this. Test it by temporarily setting
 - The hero name is scaled at build time from the longest word, and each word is
   clipped vertically with `clip-path` rather than `overflow: hidden` — the latter
   cut long names off sideways.
-- `favicon.svg` is a route, so there must be no `public/favicon.svg` to collide
-  with it.
+- Icons and `og.png` are routes, so `public/` must not contain files of the same
+  name — a static file would shadow the endpoint and silently go stale.
+- The marquee needs each copy of its list to be at least `100vw` wide. Without
+  that, a short list runs out before the `-50%` slide completes and the strip
+  visibly stops.
 - Do not commit `CLAUDE.md` as a symlink to this file; GitHub renders it as a
   broken stub.
 

@@ -38,7 +38,8 @@ jump straight to the right part.
 
 - [ ] Put your photo in `public/` and point `photo:` at it — [how](#adding-your-photo-or-resume)
 - [ ] Put your resume PDF in `public/` and point `resume:` at it
-- [ ] *(optional)* Replace `public/og.png` with your own link preview image
+- [ ] *(optional)* Add your own link preview image and point `ogImage:` at it —
+      otherwise one is generated in your accent colour
 
 ### Delete what you do not have
 
@@ -343,12 +344,15 @@ src/
   pages/robots.txt.ts            generated for search engines
   pages/sitemap.xml.ts           generated for search engines
   pages/favicon.svg.ts           tab icon, drawn from your initial + accent colour
+  pages/icon-*.png.ts            app icons, generated from your accent colour
+  pages/og.png.ts                the link preview card
   pages/manifest.webmanifest.ts  name and icons when saved to a phone
   pages/.well-known/             security.txt (how to report a problem)
   components/                    one file per section
   layouts/Base.astro             page shell, meta tags, fonts, dark mode
+  lib/brand.ts                   draws the icons (no image library needed)
   styles/global.css              colours, type sizes, shared bits
-public/                          your photo, resume, icons, preview image
+public/                          your photo, resume, and anything else you add
 .github/workflows/deploy.yml     publishes to GitHub Pages on every push
 ```
 
@@ -361,9 +365,10 @@ To **change the fonts**, edit the Google Fonts link in `src/layouts/Base.astro` 
 
 ## Good to know
 
-- **Your tab icon is automatic.** It is drawn from your first initial and your accent
-  colour, so it updates when you do. The app icons in `public/` (`icon-192.png` and
-  friends) are a neutral default — replace them only if you want to.
+- **Your icons draw themselves.** The tab icon uses your first initial and your accent
+  colour. The app icons, the `favicon.ico` and the link preview card are generated from
+  your accent colour at build time — change `accent` and every one of them changes with
+  it. There is no image to redraw and no script to run.
 - **Dark mode** is built in, remembered between visits, and follows the visitor's
   system setting the first time.
 - **Social previews** are handled: Open Graph and Twitter card tags, plus structured
